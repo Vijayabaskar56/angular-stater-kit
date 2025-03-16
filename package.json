@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "biome check src",
+    "format": "biome fmt src"
   },
   "private": true,
   "dependencies": {
@@ -48,6 +50,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "simple-git-hooks": "^2.11.1",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1"
   },
@@ -58,7 +61,12 @@
       "esbuild",
       "lmdb",
       "msgpackr-extract",
-      "nx"
+      "nx",
+      "simple-git-hooks"
     ]
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm run lint",
+    "pre-push": "pnpm run format"
   }
 }

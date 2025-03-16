@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { LoadingService } from './services/loading.service';
 import { RouterOutlet } from '@angular/router';
 import { NgxSonnerToaster } from 'ngx-sonner';
+import { LoadingService } from './services/loading.service';
 @Component({
  selector: 'app-root',
  imports: [RouterOutlet , NgxSonnerToaster],

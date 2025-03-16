@@ -55,7 +55,10 @@ export class SignupComponent {
                       description:
                         'Please check your email for the verification OTP',
                     });
-                    this.router.navigate(['/auth/otp' , {email: values.value.email}]);
+                    this.router.navigate([
+                      '/auth/otp',
+                      { email: values.value.email },
+                    ]);
                   },
                   onError: (ctx) => {
                     alert(ctx.error.message);
@@ -81,7 +84,7 @@ export class SignupComponent {
   canSubmit = injectStore(this.signUpForm, (state) => state.canSubmit);
   isSubmitting = injectStore(this.signUpForm, (state) => state.isSubmitting);
   constructor(private authService: AuthService, private router: Router) {
-    console.log('hii' , this.canSubmit() , this.isSubmitting()) 
+    console.log('hii', this.canSubmit(), this.isSubmitting());
   }
   togglePassword() {
     this.showPassword = !this.showPassword;
@@ -89,13 +92,28 @@ export class SignupComponent {
   toggleConfirmPassword() {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
-  
+
   async signupWithGoogle() {
     try {
-      await this.authService.authClient.signIn.social({
-        provider: 'google',
-        callbackURL: '/account',
-      });
+      await this.authService.authClient.signIn.social(
+        {
+          provider: 'google',
+          callbackURL: '/account',
+        },
+        {
+          onRequest: () => {
+            this.loading.set(true);
+          },
+          onSuccess: (ctx) => {
+            this.loading.set(false);
+            window.location.href = ctx.data.url;
+          },
+          onError: (ctx) => {
+            this.loading.set(false);
+            toast.error(ctx.error.message);
+          },
+        }
+      );
       this.router.navigate(['/account']);
     } catch (err) {}
   }

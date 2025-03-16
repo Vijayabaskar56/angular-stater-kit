@@ -8,6 +8,7 @@ import {
 } from '@tanstack/angular-form';
 import { loginSchema } from '../../models/validation.schemas';
 import { AuthService } from '../../services/auth.service';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-login',
@@ -68,10 +69,28 @@ export class LoginComponent {
 
   async loginWithGoogle() {
     try {
-      // await this.authService.authClient.();
+      await this.authService.authClient.signIn.social(
+        {
+          provider: 'google',
+          callbackURL: '/account',
+        },
+        {
+          onRequest: () => {
+            this.loading.set(true);
+          },
+          onSuccess: (ctx) => {
+            this.loading.set(false);
+            window.location.href = ctx.data.url;
+          },
+          onError: (ctx) => {
+            this.loading.set(false);
+            toast.error(ctx.error.message);
+          },
+        }
+      );
       this.router.navigate(['/account']);
     } catch (err) {
-      this.error = 'Google login failed';
+      toast.error('Google login failed');
     }
   }
 }
