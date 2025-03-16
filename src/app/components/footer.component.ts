@@ -1,12 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { CommonModule } from "@angular/common";
+import { Component, inject } from "@angular/core";
+import { AuthService } from "../services/auth.service";
 
 @Component({
-  selector: 'app-footer',
-  standalone: true,
-  imports: [CommonModule],
-  template : `<footer class="footer sm:footer-horizontal text-base-content items-center p-4">
+	selector: "app-footer",
+	standalone: true,
+	imports: [CommonModule],
+	template: `<footer class="footer sm:footer-horizontal text-base-content items-center p-4">
   <aside class="grid-flow-col items-center">
     <svg
       width="36"
@@ -59,14 +59,12 @@ import { AuthService } from '../services/auth.service';
 </footer>`,
 })
 export class FooterComponent {
-  userInitials = 'U'; // This could be dynamic based on user's name
-  year = new Date().getFullYear();
-  constructor(private authService: AuthService) {
-    
-  }
-  // isAuthenticated$ = this.authService.authClient.getSession();
-  
-  logout() {
-    this.authService.authClient.signOut();
-  }
+	userInitials = "U"; // This could be dynamic based on user's name
+	year = new Date().getFullYear();
+	authService = inject(AuthService);
+	// isAuthenticated$ = this.authService.authClient.getSession();
+
+	logout() {
+		this.authService.authClient.signOut();
+	}
 }

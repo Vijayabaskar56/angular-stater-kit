@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ThemeService, Theme } from '../../services/theme.service';
+import { CommonModule } from "@angular/common";
+import { Component, type OnInit, inject } from "@angular/core";
+import { type Theme, ThemeService } from "../../services/theme.service";
 
 @Component({
-  selector: 'app-theme-switcher',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
+	selector: "app-theme-switcher",
+	standalone: true,
+	imports: [CommonModule],
+	template: `
     <div class="dropdown dropdown-end">
       <label tabindex="0" class="btn btn-ghost btn-circle">
         <!-- Sun icon -->
@@ -59,24 +59,25 @@ import { ThemeService, Theme } from '../../services/theme.service';
       </ul>
     </div>
   `,
-  styles: [`
+	styles: [
+		`
     .active {
       @apply bg-primary text-primary-content;
     }
-  `]
+  `,
+	],
 })
 export class ThemeSwitcherComponent implements OnInit {
-  currentTheme: Theme = 'system';
+	currentTheme: Theme = "system";
+	themeService = inject(ThemeService);
 
-  constructor(private themeService: ThemeService) {}
+	ngOnInit() {
+		this.themeService.theme$.subscribe((theme) => {
+			this.currentTheme = theme;
+		});
+	}
 
-  ngOnInit() {
-    this.themeService.theme$.subscribe(theme => {
-      this.currentTheme = theme;
-    });
-  }
-
-  changeTheme(theme: Theme) {
-    this.themeService.setTheme(theme);
-  }
+	changeTheme(theme: Theme) {
+		this.themeService.setTheme(theme);
+	}
 }

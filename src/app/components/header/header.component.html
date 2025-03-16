@@ -1,16 +1,4 @@
-import { CommonModule } from "@angular/common";
-import { Component, inject } from "@angular/core";
-import { RouterLink } from "@angular/router";
-import { AuthService } from "../services/auth.service";
-import { ThemeService } from "../services/theme.service";
-import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.component";
-
-@Component({
-	selector: "app-header",
-	standalone: true,
-	imports: [CommonModule, RouterLink, ThemeSwitcherComponent],
-	template: `
-  <header class="fixed top-0 left-0 right-0 bg-base-100 shadow-md z-50">
+<header class="fixed top-0 left-0 right-0 bg-base-100 shadow-md z-50">
     <div class="navbar container mx-auto px-4">
       <div class="flex-1">
         <a routerLink="/" class="text-2xl font-bold">
@@ -18,13 +6,13 @@ import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.componen
         </a>
       </div>
       
-      <div *ngIf="!(isAuthenticated$); else authenticatedUser">
-        <a routerLink="/auth/login" class="btn btn-ghost">Login</a>
-        <a routerLink="/auth/signup" class="btn btn-primary ml-2">Sign up</a>
-      </div>
       <div class="flex-none gap-4">
         <app-theme-switcher></app-theme-switcher>
         
+        <!-- <div *ngIf="!(isAuthenticated$ | async); else authenticatedUser">
+          <a routerLink="/login" class="btn btn-ghost">Login</a>
+          <a routerLink="/signup" class="btn btn-primary ml-2">Sign up</a>
+        </div> -->
         
         <ng-template #authenticatedUser>
           <div class="dropdown dropdown-end">
@@ -50,15 +38,4 @@ import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.componen
   </header>
   
   <!-- Spacer to prevent content from hiding under fixed header -->
-  <div class="h-16"></div>`,
-})
-export class HeaderComponent {
-	userInitials = "U"; // This could be dynamic based on user's name
-	themeService = inject(ThemeService);
-	authService = inject(AuthService);
-	isAuthenticated$ = false;
-
-	logout() {
-		this.authService.authClient.signOut();
-	}
-}
+  <div class="h-16"></div>

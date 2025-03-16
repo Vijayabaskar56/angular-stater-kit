@@ -2,8 +2,7 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-
 @utility card {
-  @apply bg-base-100 shadow-lg rounded-lg p-8;
-} 
+	@apply bg-base-100 shadow-lg rounded-lg p-8;
+}
 /* @plugin "daisyui/theme" {} */

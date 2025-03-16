@@ -1,21 +1,21 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.component';
-import { RouterOutlet } from '@angular/router';
+import { CommonModule } from "@angular/common";
+import { Component, Input } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
+import { ThemeSwitcherComponent } from "../theme-switcher/theme-switcher.component";
 
 interface AuthLayoutConfig {
-  imageUrl: string;
-  title: string;
-  description: string;
-  imagePosition?: 'left' | 'right';
-  copyright?: string;
+	imageUrl: string;
+	title: string;
+	description: string;
+	imagePosition?: "left" | "right";
+	copyright?: string;
 }
 
 @Component({
-  selector: 'app-auth-layout',
-  standalone: true,
-  imports: [CommonModule, ThemeSwitcherComponent, RouterOutlet],
-  template: `
+	selector: "app-auth-layout",
+	standalone: true,
+	imports: [CommonModule, ThemeSwitcherComponent, RouterOutlet],
+	template: `
     <div class="min-h-screen flex" [class.flex-row-reverse]="config.imagePosition === 'right'">
       <!-- Cover Image Section -->
       <div class="hidden lg:block w-1/2 relative">
@@ -47,13 +47,15 @@ interface AuthLayoutConfig {
         </div>
       </div>
     </div>
-  `
+  `,
 })
 export class AuthLayoutComponent {
-  @Input() config: AuthLayoutConfig = {
-    imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop&ixlib=rb-4.0.3',
-    title: 'Welcome to AuthFlow',
-    description: 'Secure, simple, and seamless authentication for your applications.',
-    imagePosition: 'left',
-  };
+	@Input() config: AuthLayoutConfig = {
+		imageUrl:
+			"https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop&ixlib=rb-4.0.3",
+		title: "Welcome to AuthFlow",
+		description:
+			"Secure, simple, and seamless authentication for your applications.",
+		imagePosition: "left",
+	};
 }
