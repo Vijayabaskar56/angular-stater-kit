@@ -1,4 +1,4 @@
-<form class="auth-form" (ngSubmit)="onSubmit()">
+<form class="w-full max-w-md mx-auto bg-base-100 shadow-lg rounded-lg p-8" (submit)="otpForm.handleSubmit()">
   <div class="text-center mb-8">
     <h1 class="text-3xl font-bold">Enter OTP Code</h1>
     <p class="text-base-content/60 mt-2">
@@ -6,25 +6,29 @@
     </p>
   </div>
 
-  <!-- OTP Input Fields -->
-  <div class="flex gap-2 justify-center mb-6">
-    <ng-container *ngFor="let digit of otpValues; let i = index">
-      <input
-        #otpInput
-        type="text"
-        maxlength="1"
-        class="w-12 h-14 text-center text-2xl font-bold input input-bordered focus:input-primary"
-        [value]="digit"
-        (input)="onOtpChange(i, $event)"
-        (keydown)="onKeyDown(i, $event)"
-        (paste)="onPaste($event)"
-        [attr.data-index]="i"
-        autocomplete="off"
-        inputmode="numeric"
-        pattern="[0-9]*"
-      />
-    </ng-container>
-  </div>
+  <!-- OTP Input -->
+  <ng-container [tanstackField]="otpForm" name="otp" #otp="field">
+    <div class="flex gap-2 justify-center mb-6">
+      <ng-container *ngFor="let _ of [0,1,2,3,4,5]; let i = index">
+        <input
+          type="text"
+          maxlength="1"
+          class="w-12 h-14 text-center text-2xl font-bold input input-bordered focus:input-primary"
+          [value]="otp.api.state.value[i]"
+          (input)="onOtpInput($event, i)"
+          (keydown)="onKeyDown($event, i)"
+          (paste)="onPaste($event, i)"
+          placeholder="i"
+          inputmode="numeric"
+          pattern="[0-9]*"
+        />
+      </ng-container>
+    </div>
+
+    <label *ngIf="otp.api.state.meta.isTouched && otp.api.state.meta.errors" class="label justify-center">
+      <span class="label-text-alt text-error">{{ otp.api.state.meta.errors[0] }}</span>
+    </label>
+  </ng-container>
 
   <!-- Timer and Resend -->
   <div class="text-center mb-6">
@@ -44,19 +48,11 @@
     </p>
   </div>
 
-  <!-- Error Message -->
-  <div *ngIf="error" class="alert alert-error mt-4 animate-fade-in">
-    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-    <span>{{ error }}</span>
-  </div>
-
   <!-- Submit Button -->
   <button 
     type="submit" 
-    class="btn btn-primary w-full mt-6" 
-    [disabled]="loading || otpValues.includes('')"
+    class="btn btn-primary w-full" 
+    [disabled]="loading || !otpForm.state.isValid"
   >
     <span *ngIf="loading" class="loading loading-spinner"></span>
     {{ loading ? 'Verifying...' : 'Verify OTP' }}

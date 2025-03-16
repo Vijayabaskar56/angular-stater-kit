@@ -1,22 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { injectForm, TanStackField } from '@tanstack/angular-form';
+import { injectForm, injectStore, TanStackField } from '@tanstack/angular-form';
 import { signUpSchema } from '../../models/validation.schemas';
 import { AuthService } from '../../services/auth.service';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink , TanStackField]
+  imports: [CommonModule, FormsModule, RouterLink, TanStackField],
 })
 export class SignupComponent {
   showPassword = false;
   showConfirmPassword = false;
-  loading = false;
-  
+  loading = signal<boolean>(false);
+  #router = inject(Router);
   signUpForm = injectForm({
     defaultValues: {
       email: '',
@@ -26,47 +27,76 @@ export class SignupComponent {
       name: '',
     },
     validators: {
-      onChange : signUpSchema
+      onChange: signUpSchema,
     },
     onSubmit: async (values) => {
-      this.loading = true
+      this.loading.set(true);
       try {
-        await this.authService.authClient.signUp.email({
-          email : values.value.email,
-          password : values.value.password,
-          name : values.value.name,
-          username : values.value.userName,
-        });
+        await this.authService.authClient.signUp.email(
+          {
+            email: values.value.email,
+            password: values.value.password,
+            name: values.value.name,
+            username: values.value.userName,
+          },
+          {
+            onRequest: () => {
+              this.loading.set(true);
+            },
+            onSuccess: async () => {
+              await this.authService.authClient.emailOtp.sendVerificationOtp(
+                {
+                  email: values.value.email,
+                  type: 'email-verification',
+                },
+                {
+                  onSuccess: () => {
+                    toast.message('Verification OTP sent', {
+                      description:
+                        'Please check your email for the verification OTP',
+                    });
+                    this.router.navigate(['/auth/otp' , {email: values.value.email}]);
+                  },
+                  onError: (ctx) => {
+                    alert(ctx.error.message);
+                  },
+                }
+              );
+            },
+            onError: () => {
+              toast.message('Error', {
+                description: 'Error signing up',
+              });
+            },
+          }
+        );
         this.router.navigate(['/login']);
       } catch (error) {
         // Handle error
       } finally {
-        this.loading = false;
+        this.loading.set(false);
       }
     },
   });
-
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
-
+  canSubmit = injectStore(this.signUpForm, (state) => state.canSubmit);
+  isSubmitting = injectStore(this.signUpForm, (state) => state.isSubmitting);
+  constructor(private authService: AuthService, private router: Router) {
+    console.log('hii' , this.canSubmit() , this.isSubmitting()) 
+  }
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
-
   toggleConfirmPassword() {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
-
+  
   async signupWithGoogle() {
     try {
       await this.authService.authClient.signIn.social({
         provider: 'google',
-        callbackURL: '/account'
+        callbackURL: '/account',
       });
       this.router.navigate(['/account']);
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 }

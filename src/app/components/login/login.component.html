@@ -85,10 +85,10 @@
   <button 
     type="submit" 
     class="btn btn-primary w-full mt-6" 
-    [disabled]="loading || !logInForm.state.isValid"
+    [disabled]="!canSubmit()"
   >
-    <span *ngIf="loading" class="loading loading-spinner"></span>
-    {{ loading ? 'Signing in...' : 'Sign in' }}
+    <span *ngIf="isSubmitting()" class="loading loading-spinner"></span>
+    {{ isSubmitting() ? 'Signing in...' : 'Sign in' }}
   </button>
 
   <p class="text-center mt-6 text-base-content/60">

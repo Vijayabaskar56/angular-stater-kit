@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { injectForm, TanStackField } from '@tanstack/angular-form';
+import {
+  injectForm,
+  injectStore,
+  TanStackField
+} from '@tanstack/angular-form';
 import { loginSchema } from '../../models/validation.schemas';
 import { AuthService } from '../../services/auth.service';
 
@@ -9,40 +13,54 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   standalone: true,
-  imports: [CommonModule, RouterLink, TanStackField]
+  imports: [CommonModule, RouterLink, TanStackField],
 })
 export class LoginComponent {
   error: string = '';
-  loading: boolean = false;
   showPassword: boolean = false;
-
+  loading = signal<boolean>(false);
   logInForm = injectForm({
     defaultValues: {
       email: '',
       password: '',
     },
     validators: {
-      onChange : loginSchema
+      onChange: loginSchema,
     },
     onSubmit: async (values) => {
-      this.loading = true;
+      this.loading.set(true);
       this.error = '';
 
       try {
-        // await this.authService.authClient.signIn
-        this.router.navigate(['/account']);
+        await this.authService.authClient.signIn.email(
+          {
+            email: values.value.email,
+            password: values.value.password,
+          },
+          {
+            onRequest: () => {
+              this.loading.set(true);
+            },
+            onSuccess: () => {
+              this.loading.set(false);
+              this.router.navigate(['/account']);
+            },
+            onError: () => {
+              this.loading.set(false);
+            },
+          }
+        );
       } catch (err) {
         this.error = 'Invalid email or password';
       } finally {
-        this.loading = false;
+        this.loading.set(false);
       }
-    }
+    },
   });
+  canSubmit = injectStore(this.logInForm, (state) => state.canSubmit);
+  isSubmitting = injectStore(this.logInForm, (state) => state.isSubmitting);
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   togglePassword() {
     this.showPassword = !this.showPassword;

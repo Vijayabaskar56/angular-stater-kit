@@ -39,7 +39,28 @@
         }
       </div>
     </ng-container>
-
+    <!-- UserName Input -->
+    <ng-container [tanstackField]="signUpForm" name="userName" #username="field">
+      <div class="form-control w-full mb-4">
+        <label class="label" [for]="username.api.name">
+          <span class="label-text font-medium">Username</span>
+        </label>
+        <input 
+          type="text" 
+          [name]="username.api.name" 
+          [id]="  name.api.name" 
+          [value]="username.api.state.value"
+          (input)="username.api.handleChange($any($event).target?.value)"
+          class="input input-bordered w-full focus:input-primary transition-colors duration-200" 
+          placeholder="Enter your username"
+        />
+        @if (username.api.state.meta.isDirty && username.api.state.meta.errors) {
+          @for (error of username.api.state.meta.errors; track $index) {
+            <span class="label-text-alt text-error">{{ error.message }}</span>
+          }
+        }
+      </div>
+    </ng-container>
     <!-- Email Input -->
     <ng-container [tanstackField]="signUpForm" name="email" #email="field">
       <div class="form-control w-full mb-4">
@@ -170,12 +191,18 @@
     <button 
       type="submit" 
       class="btn btn-primary w-full mt-6" 
-      [disabled]="loading || !signUpForm.state.isValid"
+      [disabled]="!canSubmit()"
     >
-      <span *ngIf="loading" class="loading loading-spinner"></span>
-      {{ loading ? 'Creating account...' : 'Create account' }}
+      <span *ngIf="isSubmitting()" class="loading loading-spinner"></span>
+      @if (isSubmitting()) {
+        Loading...
+      } @else {
+        Sign Up
+      }
     </button>
-
+    <span>
+      {{signUpForm.getAllErrors() | json}}
+    </span>
     <!-- Login Link -->
     <p class="text-center mt-6 text-base-content/60">
       Already have an account?
