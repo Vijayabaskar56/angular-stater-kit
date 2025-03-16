@@ -1,4 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 @plugin "daisyui";
+
+
+@utility card {
+  @apply bg-base-100 shadow-lg rounded-lg p-8;
+} 
 /* @plugin "daisyui/theme" {} */

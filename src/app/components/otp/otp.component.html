@@ -1,0 +1,71 @@
+<form class="auth-form" (ngSubmit)="onSubmit()">
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold">Enter OTP Code</h1>
+    <p class="text-base-content/60 mt-2">
+      We've sent a 6-digit code to your email
+    </p>
+  </div>
+
+  <!-- OTP Input Fields -->
+  <div class="flex gap-2 justify-center mb-6">
+    <ng-container *ngFor="let digit of otpValues; let i = index">
+      <input
+        #otpInput
+        type="text"
+        maxlength="1"
+        class="w-12 h-14 text-center text-2xl font-bold input input-bordered focus:input-primary"
+        [value]="digit"
+        (input)="onOtpChange(i, $event)"
+        (keydown)="onKeyDown(i, $event)"
+        (paste)="onPaste($event)"
+        [attr.data-index]="i"
+        autocomplete="off"
+        inputmode="numeric"
+        pattern="[0-9]*"
+      />
+    </ng-container>
+  </div>
+
+  <!-- Timer and Resend -->
+  <div class="text-center mb-6">
+    <p class="text-sm text-base-content/60">
+      Didn't receive the code?
+      <ng-container *ngIf="timeLeft > 0">
+        Resend in {{ timeLeft }}s
+      </ng-container>
+      <button
+        *ngIf="timeLeft === 0"
+        type="button"
+        class="link link-primary ml-1"
+        (click)="resendOTP()"
+      >
+        Resend OTP
+      </button>
+    </p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="alert alert-error mt-4 animate-fade-in">
+    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <span>{{ error }}</span>
+  </div>
+
+  <!-- Submit Button -->
+  <button 
+    type="submit" 
+    class="btn btn-primary w-full mt-6" 
+    [disabled]="loading || otpValues.includes('')"
+  >
+    <span *ngIf="loading" class="loading loading-spinner"></span>
+    {{ loading ? 'Verifying...' : 'Verify OTP' }}
+  </button>
+
+  <!-- Back to Login -->
+  <p class="text-center mt-6 text-base-content/60">
+    <a routerLink="/login" class="link link-hover">
+      ← Back to Login
+    </a>
+  </p>
+</form>

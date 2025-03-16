@@ -1,0 +1,41 @@
+<div class="min-h-screen bg-base-200 p-4">
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-base-100 shadow-xl rounded-lg p-6">
+      <h2 class="text-2xl font-bold mb-6">Account Settings</h2>
+      
+      <div class="divider"></div>
+      
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-semibold">Profile Information</h3>
+            <p class="text-sm text-gray-500">Update your account information</p>
+          </div>
+          <button class="btn btn-primary">Edit Profile</button>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-semibold">Security Settings</h3>
+            <p class="text-sm text-gray-500">Manage your password and security preferences</p>
+          </div>
+          <button class="btn btn-secondary">Change Password</button>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-semibold">Notifications</h3>
+            <p class="text-sm text-gray-500">Choose what updates you want to receive</p>
+          </div>
+          <button class="btn">Configure</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="flex justify-end">
+        <button class="btn btn-error" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
