@@ -14,7 +14,10 @@ export const routes: Routes = [
 	{
 		path: "",
 		component: AppLayoutComponent,
-		children: [{ path: "", component: AppComponent, pathMatch: "full" }, { path: "account", component: AccountComponent }],
+		children: [
+			{ path: "", component: AppComponent, pathMatch: "full" },
+			{ path: "account", component: AccountComponent },
+		],
 	},
 	{
 		path: "auth",
