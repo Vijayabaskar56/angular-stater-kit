@@ -3,6 +3,7 @@ import { Component, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { TanStackField, injectForm, injectStore } from "@tanstack/angular-form";
+import { Eye, EyeClosed, LucideAngularModule } from "lucide-angular";
 import { toast } from "ngx-sonner";
 import { signUpSchema } from "../../models/validation.schemas";
 import { AuthService } from "../../services/auth.service";
@@ -11,12 +12,20 @@ import { AuthService } from "../../services/auth.service";
 	selector: "app-signup",
 	templateUrl: "./signup.component.html",
 	standalone: true,
-	imports: [CommonModule, FormsModule, RouterLink, TanStackField],
+	imports: [
+		CommonModule,
+		FormsModule,
+		RouterLink,
+		TanStackField,
+		LucideAngularModule,
+	],
 })
 export class SignupComponent {
 	showPassword = false;
 	showConfirmPassword = false;
 	loading = signal<boolean>(false);
+	readonly eyeOpen = Eye;
+	readonly eyeClosed = EyeClosed;
 	#router = inject(Router);
 	signUpForm = injectForm({
 		defaultValues: {
@@ -30,55 +39,47 @@ export class SignupComponent {
 			onChange: signUpSchema,
 		},
 		onSubmit: async (values) => {
-			this.loading.set(true);
-			try {
-				await this.authService.authClient.signUp.email(
-					{
-						email: values.value.email,
-						password: values.value.password,
-						name: values.value.name,
-						username: values.value.userName,
+			await this.authService.authClient.signUp.email(
+				{
+					email: values.value.email,
+					password: values.value.password,
+					name: values.value.name,
+					username: values.value.userName,
+				},
+				{
+					onRequest: () => {
+						this.loading.set(true);
 					},
-					{
-						onRequest: () => {
-							this.loading.set(true);
-						},
-						onSuccess: async () => {
-							await this.authService.authClient.emailOtp.sendVerificationOtp(
-								{
-									email: values.value.email,
-									type: "email-verification",
+					onSuccess: async () => {
+						await this.authService.authClient.emailOtp.sendVerificationOtp(
+							{
+								email: values.value.email,
+								type: "email-verification",
+							},
+							{
+								onSuccess: () => {
+									toast.message("Verification OTP sent", {
+										description:
+											"Please check your email for the verification OTP",
+									});
+									this.router.navigate([
+										"/auth/otp",
+										{ email: values.value.email },
+									]);
 								},
-								{
-									onSuccess: () => {
-										toast.message("Verification OTP sent", {
-											description:
-												"Please check your email for the verification OTP",
-										});
-										this.router.navigate([
-											"/auth/otp",
-											{ email: values.value.email },
-										]);
-									},
-									onError: (ctx) => {
-										alert(ctx.error.message);
-									},
+								onError: (ctx) => {
+									alert(ctx.error.message);
 								},
-							);
-						},
-						onError: () => {
-							toast.message("Error", {
-								description: "Error signing up",
-							});
-						},
+							},
+						);
 					},
-				);
-				this.router.navigate(["/login"]);
-			} catch (error) {
-				// Handle error
-			} finally {
-				this.loading.set(false);
-			}
+					onError: () => {
+						toast.message("Error", {
+							description: "Error signing up",
+						});
+					},
+				},
+			);
 		},
 	});
 	canSubmit = injectStore(this.signUpForm, (state) => state.canSubmit);

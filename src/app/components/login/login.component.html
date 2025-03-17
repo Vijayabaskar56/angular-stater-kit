@@ -1,4 +1,4 @@
-<form class="w-full max-w-md mx-auto" (submit)="logInForm.handleSubmit()">
+<form class="w-full max-w-md mx-auto" >
   <div class="text-center mb-6">
     <h1 class="text-3xl font-bold auth-title">Welcome back</h1>
     <p class="text-base-content/60 mt-2">Please enter your details to sign in</p>
@@ -65,13 +65,11 @@
         class="absolute right-2 top-1/2 -translate-y-1/2 btn btn-ghost btn-sm btn-circle"
         (click)="togglePassword()"
       >
-        <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-        </svg>
-        <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-        </svg>
+      @if (showPassword) {
+        <i-lucide [img]="eyeOpen" class="my-icon"></i-lucide>
+      } @else {
+        <i-lucide [img]="eyeClosed" class="my-icon"></i-lucide>
+      }
       </button>
     </div>
     <label class="label">
@@ -81,9 +79,31 @@
     </label>
     </div>
   </ng-container>
-
+  <ng-container [tanstackField]="logInForm" name="rememberMe" #rememberMe="field">
+    <div class="form-control mt-6">
+      <label class="label cursor-pointer justify-start gap-3">
+        <input 
+          type="checkbox"
+          [id]="rememberMe.api.name"
+          [name]="rememberMe.api.name"
+          [checked]="rememberMe.api.state.value"
+          (change)="rememberMe.api.handleChange($any($event).target.checked)"
+          class="checkbox checkbox-primary" 
+        />
+        <span class="label-text">
+          Remember me
+        </span>
+      </label>
+      @if (rememberMe.api.state.meta.isDirty && rememberMe.api.state.meta.errors) {
+        @for (error of rememberMe.api.state.meta.errors; track $index) {
+          <span class="label-text-alt text-error">{{ error.message }}</span>
+        }
+      }
+    </div>
+  </ng-container>
   <button 
-    type="submit" 
+    type="button"
+    (click)="logInForm.handleSubmit()" 
     class="btn btn-primary w-full mt-6" 
     [disabled]="!canSubmit()"
   >
@@ -93,6 +113,6 @@
 
   <p class="text-center mt-6 text-base-content/60">
     Don't have an account?
-    <a routerLink="/signup" class="link link-primary ml-1">Sign up</a>
+    <a routerLink="/auth/signup" class="link link-primary ml-1">Sign up</a>
   </p>
 </form>

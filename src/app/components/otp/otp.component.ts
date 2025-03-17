@@ -1,7 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { TanStackField, injectForm } from "@tanstack/angular-form";
+import { TanStackField, injectForm, injectStore } from "@tanstack/angular-form";
+import { toast } from "ngx-sonner";
 import { z } from "zod";
 import { AuthService } from "../../services/auth.service";
 
@@ -23,11 +24,12 @@ export class OTPComponent {
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	authService = inject(AuthService);
+	email = signal<string>("");
 	constructor() {
 		this.startTimer();
 		this.route.queryParams.subscribe((params) => {
 			// biome-ignore lint/complexity/useLiteralKeys: <explanation>
-			console.log(params["email"]);
+			this.email.set(params["email"]);
 		});
 	}
 	otpForm = injectForm({
@@ -39,20 +41,29 @@ export class OTPComponent {
 		},
 		onSubmit: async (values) => {
 			this.loading = true;
-			try {
-				await this.authService.authClient.emailOtp.verifyEmail({
-					// biome-ignore lint/complexity/useLiteralKeys: <explanation>
-					email: this.route.snapshot.params["email"],
+			await this.authService.authClient.emailOtp.verifyEmail(
+				{
+					email: this.email(),
 					otp: values.value.otp,
-				});
-				this.router.navigate(["/account"]);
-			} catch (error) {
-				// Handle error
-			} finally {
-				this.loading = false;
-			}
+				},
+				{
+					onRequest: () => {
+						this.loading = true;
+					},
+					onSuccess: (ctx) => {
+						console.log(ctx);
+						toast.success(ctx.data.message);
+						// this.router.navigate(["/account"]);
+					},
+					onError: (ctx) => {
+						toast.error(ctx.error.message);
+					},
+				},
+			);
 		},
 	});
+	canSubmit = injectStore(this.otpForm, (state) => state.canSubmit);
+	isSubmitting = injectStore(this.otpForm, (state) => state.isSubmitting);
 	ngOnDestroy() {
 		if (this.timerInterval) {
 			clearInterval(this.timerInterval);
@@ -73,8 +84,7 @@ export class OTPComponent {
 	async resendOTP() {
 		try {
 			await this.authService.authClient.emailOtp.sendVerificationOtp({
-				// biome-ignore lint/complexity/useLiteralKeys: <explanation>
-				email: this.route.snapshot.root.params["email"],
+				email: this.email(),
 				type: "email-verification",
 			});
 			this.startTimer();

@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, inject, signal } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
 import { TanStackField, injectForm, injectStore } from "@tanstack/angular-form";
+import { Eye, EyeClosed, LucideAngularModule } from "lucide-angular";
 import { toast } from "ngx-sonner";
 import { loginSchema } from "../../models/validation.schemas";
 import { AuthService } from "../../services/auth.service";
@@ -10,48 +11,45 @@ import { AuthService } from "../../services/auth.service";
 	selector: "app-login",
 	templateUrl: "./login.component.html",
 	standalone: true,
-	imports: [CommonModule, RouterLink, TanStackField],
+	imports: [CommonModule, RouterLink, TanStackField, LucideAngularModule],
 })
 export class LoginComponent {
 	error = "";
 	showPassword = false;
+	readonly eyeOpen = Eye;
+	readonly eyeClosed = EyeClosed;
 	loading = signal<boolean>(false);
 	logInForm = injectForm({
 		defaultValues: {
 			email: "",
 			password: "",
+			rememberMe: false,
 		},
 		validators: {
 			onChange: loginSchema,
 		},
 		onSubmit: async (values) => {
-			this.loading.set(true);
-			this.error = "";
-
-			try {
-				await this.authService.authClient.signIn.email(
-					{
-						email: values.value.email,
-						password: values.value.password,
+			await this.authService.authClient.signIn.email(
+				{
+					email: values.value.email,
+					password: values.value.password,
+					rememberMe: values.value.rememberMe,
+				},
+				{
+					onRequest: () => {
+						this.loading.set(true);
 					},
-					{
-						onRequest: () => {
-							this.loading.set(true);
-						},
-						onSuccess: () => {
-							this.loading.set(false);
-							this.router.navigate(["/account"]);
-						},
-						onError: () => {
-							this.loading.set(false);
-						},
+					onSuccess: (ctx) => {
+						console.log(ctx);
+						this.loading.set(false);
+						this.router.navigate(["/account"]);
 					},
-				);
-			} catch (err) {
-				this.error = "Invalid email or password";
-			} finally {
-				this.loading.set(false);
-			}
+					onError: (ctx) => {
+						this.loading.set(false);
+						toast.error(ctx.error.message);
+					},
+				},
+			);
 		},
 	});
 	canSubmit = injectStore(this.logInForm, (state) => state.canSubmit);
@@ -68,7 +66,7 @@ export class LoginComponent {
 			await this.authService.authClient.signIn.social(
 				{
 					provider: "google",
-					callbackURL: "/account",
+					callbackURL: "http://localhost:4200/account",
 				},
 				{
 					onRequest: () => {
@@ -84,7 +82,7 @@ export class LoginComponent {
 					},
 				},
 			);
-			this.router.navigate(["/account"]);
+			// this.router.navigate(["/account"]);
 		} catch (err) {
 			toast.error("Google login failed");
 		}

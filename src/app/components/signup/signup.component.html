@@ -1,10 +1,10 @@
-  <form class="w-full max-w-md mx-auto " (submit)="signUpForm.handleSubmit()">
-    <div class="text-center mb-8">
-      <h1 class="text-3xl font-bold">Create an Account</h1>
-      <p class="text-base-content/60 mt-2">Join us today and get started</p>
-    </div>
+<form class="w-full max-w-md mx-auto " >
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold">Create an Account</h1>
+    <p class="text-base-content/60 mt-2">Join us today and get started</p>
+  </div>
 
-    <!-- Social Login -->
+  <!-- Social Login -->
     <button type="button" class="btn btn-outline w-full gap-2 hover:bg-base-200" (click)="signupWithGoogle()">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 48 48">
         <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
@@ -107,13 +107,11 @@
             class="absolute right-2 top-1/2 -translate-y-1/2 btn btn-ghost btn-sm btn-circle"
             (click)="togglePassword()"
           >
-            <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-            <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-            </svg>
+          @if (showPassword) {
+            <i-lucide [img]="eyeOpen" class="my-icon"></i-lucide>
+          } @else {
+            <i-lucide [img]="eyeClosed" class="my-icon"></i-lucide>
+          }
           </button>
         </div>
         @if (password.api.state.meta.isDirty && password.api.state.meta.errors) {
@@ -145,13 +143,11 @@
             class="absolute right-2 top-1/2 -translate-y-1/2 btn btn-ghost btn-sm btn-circle"
             (click)="toggleConfirmPassword()"
           >
-            <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-            <svg *ngIf="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-            </svg>
+          @if (showConfirmPassword) {
+            <i-lucide [img]="eyeOpen" class="my-icon"></i-lucide>
+          } @else {
+            <i-lucide [img]="eyeClosed" class="my-icon"></i-lucide>
+          }
           </button>
         </div>
         @if (confirmPassword.api.state.meta.isDirty && confirmPassword.api.state.meta.errors) {
@@ -191,6 +187,7 @@
     <button 
       type="submit" 
       class="btn btn-primary w-full mt-6" 
+      (click)="signUpForm.handleSubmit()"
       [disabled]="!canSubmit()"
     >
       <span *ngIf="isSubmitting()" class="loading loading-spinner"></span>
@@ -200,12 +197,9 @@
         Sign Up
       }
     </button>
-    <span>
-      {{signUpForm.getAllErrors() | json}}
-    </span>
     <!-- Login Link -->
     <p class="text-center mt-6 text-base-content/60">
       Already have an account?
-      <a routerLink="/login" class="link link-primary ml-1">Sign in</a>
+      <a routerLink="/auth/login" class="link link-primary ml-1">Sign in</a>
     </p>
   </form>
