@@ -3,23 +3,29 @@ import { Component, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { TanStackField, injectForm, injectStore } from "@tanstack/angular-form";
+import { Eye, EyeClosed, LucideAngularModule } from "lucide-angular";
 import { toast } from "ngx-sonner";
 import { signUpSchema } from "../../models/validation.schemas";
 import { AuthService } from "../../services/auth.service";
-import { EyeClosed ,Eye, LucideAngularModule } from "lucide-angular";
 
 @Component({
 	selector: "app-signup",
 	templateUrl: "./signup.component.html",
 	standalone: true,
-	imports: [CommonModule, FormsModule, RouterLink, TanStackField , LucideAngularModule],
+	imports: [
+		CommonModule,
+		FormsModule,
+		RouterLink,
+		TanStackField,
+		LucideAngularModule,
+	],
 })
 export class SignupComponent {
 	showPassword = false;
 	showConfirmPassword = false;
 	loading = signal<boolean>(false);
-	readonly eyeOpen = Eye
-	readonly eyeClosed = EyeClosed
+	readonly eyeOpen = Eye;
+	readonly eyeClosed = EyeClosed;
 	#router = inject(Router);
 	signUpForm = injectForm({
 		defaultValues: {
