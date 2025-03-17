@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
+import { toast } from "ngx-sonner";
 
 @Component({
 	selector: "app-account",
@@ -14,7 +15,14 @@ export class AccountComponent {
 	router = inject(Router);
 
 	logout() {
-		this.authService.authClient.signOut();
-		this.router.navigate(["/login"]);
+		this.authService.authClient.signOut({}, {
+			onSuccess : (ctx) => {
+				console.log(ctx);
+				this.router.navigate(["/auth/login"]);
+			},
+			onError : (ctx) => {
+				toast.error(ctx.error.message);
+			}
+		});
 	}
 }

@@ -1,10 +1,10 @@
-  <form class="w-full max-w-md mx-auto " (submit)="signUpForm.handleSubmit()">
-    <div class="text-center mb-8">
-      <h1 class="text-3xl font-bold">Create an Account</h1>
-      <p class="text-base-content/60 mt-2">Join us today and get started</p>
-    </div>
+<form class="w-full max-w-md mx-auto " >
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold">Create an Account</h1>
+    <p class="text-base-content/60 mt-2">Join us today and get started</p>
+  </div>
 
-    <!-- Social Login -->
+  <!-- Social Login -->
     <button type="button" class="btn btn-outline w-full gap-2 hover:bg-base-200" (click)="signupWithGoogle()">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 48 48">
         <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
@@ -191,6 +191,7 @@
     <button 
       type="submit" 
       class="btn btn-primary w-full mt-6" 
+      (click)="signUpForm.handleSubmit()"
       [disabled]="!canSubmit()"
     >
       <span *ngIf="isSubmitting()" class="loading loading-spinner"></span>
@@ -200,12 +201,9 @@
         Sign Up
       }
     </button>
-    <span>
-      {{signUpForm.getAllErrors() | json}}
-    </span>
     <!-- Login Link -->
     <p class="text-center mt-6 text-base-content/60">
       Already have an account?
-      <a routerLink="/login" class="link link-primary ml-1">Sign in</a>
+      <a routerLink="/auth/login" class="link link-primary ml-1">Sign in</a>
     </p>
   </form>

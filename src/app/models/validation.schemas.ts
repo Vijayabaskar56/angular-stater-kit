@@ -7,6 +7,7 @@ const signUpSchema = z
 		password: z.string().min(8, "Password must be at least 8 characters"),
 		confirmPassword: z.string(),
 		userName: z.string().min(3, "Username must be at least 3 characters"),
+		acceptTerms: z.boolean().default(false).optional(),
 	})
 	.refine((data) => data.password === data.confirmPassword, {
 		message: "Passwords don't match",
@@ -16,7 +17,7 @@ const signUpSchema = z
 const loginSchema = z.object({
 	email: z.string().email("Invalid email address"),
 	password: z.string().min(1, "Password is required"),
-	rememberMe: z.boolean().default(false).optional(),
+	rememberMe: z.boolean()
 });
 
 const twoFaSchema = z.object({

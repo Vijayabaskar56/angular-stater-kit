@@ -1,4 +1,4 @@
-<form class="w-full max-w-md mx-auto" (submit)="logInForm.handleSubmit()">
+<form class="w-full max-w-md mx-auto" >
   <div class="text-center mb-6">
     <h1 class="text-3xl font-bold auth-title">Welcome back</h1>
     <p class="text-base-content/60 mt-2">Please enter your details to sign in</p>
@@ -81,9 +81,31 @@
     </label>
     </div>
   </ng-container>
-
+  <ng-container [tanstackField]="logInForm" name="rememberMe" #rememberMe="field">
+    <div class="form-control mt-6">
+      <label class="label cursor-pointer justify-start gap-3">
+        <input 
+          type="checkbox"
+          [id]="rememberMe.api.name"
+          [name]="rememberMe.api.name"
+          [checked]="rememberMe.api.state.value"
+          (change)="rememberMe.api.handleChange($any($event).target.checked)"
+          class="checkbox checkbox-primary" 
+        />
+        <span class="label-text">
+          Remember me
+        </span>
+      </label>
+      @if (rememberMe.api.state.meta.isDirty && rememberMe.api.state.meta.errors) {
+        @for (error of rememberMe.api.state.meta.errors; track $index) {
+          <span class="label-text-alt text-error">{{ error.message }}</span>
+        }
+      }
+    </div>
+  </ng-container>
   <button 
-    type="submit" 
+    type="button"
+    (click)="logInForm.handleSubmit()" 
     class="btn btn-primary w-full mt-6" 
     [disabled]="!canSubmit()"
   >
@@ -93,6 +115,6 @@
 
   <p class="text-center mt-6 text-base-content/60">
     Don't have an account?
-    <a routerLink="/signup" class="link link-primary ml-1">Sign up</a>
+    <a routerLink="/auth/signup" class="link link-primary ml-1">Sign up</a>
   </p>
 </form>

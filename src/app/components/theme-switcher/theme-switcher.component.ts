@@ -61,9 +61,7 @@ import { type Theme, ThemeService } from "../../services/theme.service";
   `,
 	styles: [
 		`
-    .active {
-      @apply bg-primary text-primary-content;
-    }
+
   `,
 	],
 })
