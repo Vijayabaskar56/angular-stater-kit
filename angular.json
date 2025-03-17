@@ -16,7 +16,7 @@
 						"outputPath": "dist/angular-starter-kit",
 						"index": "src/index.html",
 						"browser": "src/main.ts",
-						"polyfills": ["zone.js"],
+						"polyfills": ["src/polyfills.ts"],
 						"tsConfig": "tsconfig.app.json",
 						"assets": [
 							{
@@ -30,6 +30,16 @@
 					},
 					"configurations": {
 						"production": {
+							"fileReplacements": [
+								{
+									"replace": "src/environments/environment.ts",
+									"with": "src/environments/environment.prod.ts"
+								}
+							],
+							"optimization": true,
+							"sourceMap": false,
+							"namedChunks": false,
+							"extractLicenses": true,
 							"budgets": [
 								{
 									"type": "initial",

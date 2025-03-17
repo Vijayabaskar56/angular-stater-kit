@@ -13,7 +13,6 @@ import { AuthService } from "../../services/auth.service";
 export class AccountComponent {
 	authService = inject(AuthService);
 	router = inject(Router);
-
 	logout() {
 		this.authService.authClient.signOut(
 			{},
