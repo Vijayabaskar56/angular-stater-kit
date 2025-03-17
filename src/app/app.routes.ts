@@ -14,7 +14,7 @@ export const routes: Routes = [
 	{
 		path: "",
 		component: AppLayoutComponent,
-		children: [{ path: "", component: AppComponent, pathMatch: "full" }],
+		children: [{ path: "", component: AppComponent, pathMatch: "full" }, { path: "account", component: AccountComponent }],
 	},
 	{
 		path: "auth",
@@ -26,5 +26,4 @@ export const routes: Routes = [
 			{ path: "otp", component: OTPComponent },
 		],
 	},
-	{ path: "account", component: AccountComponent },
 ];

@@ -9,7 +9,7 @@ import { HeaderComponent } from "../header.component";
 	standalone: true,
 	imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent],
 	template: `
-      <app-header></app-header>
+    <app-header></app-header>
     <div class="min-h-screen flex">
       <div class="flex-1">
         <router-outlet></router-outlet>

@@ -1,10 +1,10 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject, signal } from "@angular/core";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { TanStackField, injectForm } from "@tanstack/angular-form";
+import { TanStackField, injectForm, injectStore } from "@tanstack/angular-form";
+import { toast } from "ngx-sonner";
 import { z } from "zod";
 import { AuthService } from "../../services/auth.service";
-import { toast } from "ngx-sonner";
 
 const otpSchema = z.object({
 	otp: z.string().length(6, "Please enter all 6 digits"),
@@ -24,7 +24,7 @@ export class OTPComponent {
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	authService = inject(AuthService);
-	email = signal<string>('');
+	email = signal<string>("");
 	constructor() {
 		this.startTimer();
 		this.route.queryParams.subscribe((params) => {
@@ -41,24 +41,29 @@ export class OTPComponent {
 		},
 		onSubmit: async (values) => {
 			this.loading = true;
-				await this.authService.authClient.emailOtp.verifyEmail({
+			await this.authService.authClient.emailOtp.verifyEmail(
+				{
 					email: this.email(),
 					otp: values.value.otp,
-				}, {
-					onRequest : () => {
+				},
+				{
+					onRequest: () => {
 						this.loading = true;
 					},
-					onSuccess : (ctx) => {
-						console.log(ctx)
-						toast.success(ctx.data.message)
+					onSuccess: (ctx) => {
+						console.log(ctx);
+						toast.success(ctx.data.message);
 						// this.router.navigate(["/account"]);
 					},
-					onError : (ctx) => {
-						toast.error(ctx.error.message)
-					}
-				});
+					onError: (ctx) => {
+						toast.error(ctx.error.message);
+					},
+				},
+			);
 		},
 	});
+	canSubmit = injectStore(this.otpForm, (state) => state.canSubmit);
+	isSubmitting = injectStore(this.otpForm, (state) => state.isSubmitting);
 	ngOnDestroy() {
 		if (this.timerInterval) {
 			clearInterval(this.timerInterval);
