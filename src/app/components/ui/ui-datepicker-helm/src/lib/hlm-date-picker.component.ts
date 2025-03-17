@@ -1,16 +1,29 @@
-import { BooleanInput } from '@angular/cdk/coercion';
-import { booleanAttribute, Component, computed, forwardRef, input, model, output, signal } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideCalendar } from '@ng-icons/lucide';
-import { hlm } from '@spartan-ng/brain/core';
-import { type ChangeFn, type TouchFn } from '@spartan-ng/brain/forms';
-import { BrnPopoverComponent, BrnPopoverContentDirective, BrnPopoverTriggerDirective } from '@spartan-ng/brain/popover';
-import { HlmCalendarComponent } from '@spartan-ng/ui-calendar-helm';
-import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
-import { HlmPopoverContentDirective } from '@spartan-ng/ui-popover-helm';
-import type { ClassValue } from 'clsx';
-import { injectHlmDatePickerConfig } from './hlm-date-picker.token';
+import type { BooleanInput } from "@angular/cdk/coercion";
+import {
+	Component,
+	booleanAttribute,
+	computed,
+	forwardRef,
+	input,
+	model,
+	output,
+	signal,
+} from "@angular/core";
+import { NG_VALUE_ACCESSOR } from "@angular/forms";
+import { NgIcon, provideIcons } from "@ng-icons/core";
+import { lucideCalendar } from "@ng-icons/lucide";
+import { hlm } from "@spartan-ng/brain/core";
+import type { ChangeFn, TouchFn } from "@spartan-ng/brain/forms";
+import {
+	BrnPopoverComponent,
+	BrnPopoverContentDirective,
+	BrnPopoverTriggerDirective,
+} from "@spartan-ng/brain/popover";
+import { HlmCalendarComponent } from "@spartan-ng/ui-calendar-helm";
+import { HlmIconDirective } from "@spartan-ng/ui-icon-helm";
+import { HlmPopoverContentDirective } from "@spartan-ng/ui-popover-helm";
+import type { ClassValue } from "clsx";
+import { injectHlmDatePickerConfig } from "./hlm-date-picker.token";
 
 export const HLM_DATE_PICKER_VALUE_ACCESSOR = {
 	provide: NG_VALUE_ACCESSOR,
@@ -19,7 +32,7 @@ export const HLM_DATE_PICKER_VALUE_ACCESSOR = {
 };
 
 @Component({
-	selector: 'hlm-date-picker',
+	selector: "hlm-date-picker",
 	standalone: true,
 	imports: [
 		NgIcon,
@@ -56,20 +69,20 @@ export const HLM_DATE_PICKER_VALUE_ACCESSOR = {
 		</brn-popover>
 	`,
 	host: {
-		class: 'block',
+		class: "block",
 	},
 })
 export class HlmDatePickerComponent<T> {
 	private readonly _config = injectHlmDatePickerConfig<T>();
 
-	public readonly userClass = input<ClassValue>('', { alias: 'class' });
+	public readonly userClass = input<ClassValue>("", { alias: "class" });
 	protected readonly _computedClass = computed(() =>
 		hlm(
-			'inline-flex items-center gap-2 whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-[280px] justify-start text-left font-normal',
-			'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-			'disabled:pointer-events-none disabled:opacity-50',
-			'[&_ng-icon]:pointer-events-none [&_ng-icon]:shrink-0',
-			!this.date() ? 'text-muted-foreground' : '',
+			"inline-flex items-center gap-2 whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-[280px] justify-start text-left font-normal",
+			"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+			"disabled:pointer-events-none disabled:opacity-50",
+			"[&_ng-icon]:pointer-events-none [&_ng-icon]:shrink-0",
+			!this.date() ? "text-muted-foreground" : "",
 			this.userClass(),
 		),
 	);
@@ -93,10 +106,14 @@ export class HlmDatePickerComponent<T> {
 	}));
 
 	/** Defines how the date should be displayed in the UI.  */
-	public readonly formatDate = input<(date: T) => string>(this._config.formatDate);
+	public readonly formatDate = input<(date: T) => string>(
+		this._config.formatDate,
+	);
 
 	/** Defines how the date should be transformed before saving to model/form. */
-	public readonly transformDate = input<(date: T) => T>(this._config.transformDate);
+	public readonly transformDate = input<(date: T) => T>(
+		this._config.transformDate,
+	);
 
 	protected readonly formattedDate = computed(() => {
 		const date = this.date();

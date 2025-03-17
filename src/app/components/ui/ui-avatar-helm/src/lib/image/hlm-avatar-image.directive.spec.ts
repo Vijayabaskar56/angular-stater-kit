@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { type ComponentFixture, TestBed } from '@angular/core/testing';
-import { HlmAvatarImageDirective } from './hlm-avatar-image.directive';
+import { Component } from "@angular/core";
+import { type ComponentFixture, TestBed } from "@angular/core/testing";
+import { HlmAvatarImageDirective } from "./hlm-avatar-image.directive";
 
 @Component({
-	selector: 'hlm-mock',
+	selector: "hlm-mock",
 	standalone: true,
 	imports: [HlmAvatarImageDirective],
 	template: `
@@ -11,10 +11,10 @@ import { HlmAvatarImageDirective } from './hlm-avatar-image.directive';
 	`,
 })
 class HlmMockComponent {
-	public userCls = '';
+	public userCls = "";
 }
 
-describe('HlmAvatarImageDirective', () => {
+describe("HlmAvatarImageDirective", () => {
 	let component: HlmMockComponent;
 	let fixture: ComponentFixture<HlmMockComponent>;
 
@@ -23,22 +23,26 @@ describe('HlmAvatarImageDirective', () => {
 		component = fixture.componentInstance;
 	});
 
-	it('should compile', () => {
+	it("should compile", () => {
 		expect(component).toBeTruthy();
 	});
 
-	it('should add the default classes if no inputs are provided', () => {
+	it("should add the default classes if no inputs are provided", () => {
 		fixture.detectChanges();
-		expect(fixture.nativeElement.querySelector('img').className).toBe('aspect-square h-full object-cover w-full');
+		expect(fixture.nativeElement.querySelector("img").className).toBe(
+			"aspect-square h-full object-cover w-full",
+		);
 	});
 
-	it('should add any user defined classes', async () => {
-		component.userCls = 'test-class';
+	it("should add any user defined classes", async () => {
+		component.userCls = "test-class";
 		fixture.detectChanges();
 
 		// fallback uses Promise.resolve().then() so we need to wait for the next tick
 		setTimeout(() => {
-			expect(fixture.nativeElement.querySelector('img').className).toContain('test-class');
+			expect(fixture.nativeElement.querySelector("img").className).toContain(
+				"test-class",
+			);
 		});
 	});
 });

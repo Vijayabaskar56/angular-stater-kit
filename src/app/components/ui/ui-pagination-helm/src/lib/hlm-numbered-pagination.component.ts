@@ -1,4 +1,4 @@
-import { BooleanInput, NumberInput } from '@angular/cdk/coercion';
+import type { BooleanInput, NumberInput } from "@angular/cdk/coercion";
 import {
 	ChangeDetectionStrategy,
 	Component,
@@ -8,20 +8,20 @@ import {
 	model,
 	numberAttribute,
 	untracked,
-} from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { BrnSelectImports } from '@spartan-ng/brain/select';
-import { HlmSelectImports } from '@spartan-ng/ui-select-helm';
-import { HlmPaginationContentDirective } from './hlm-pagination-content.directive';
-import { HlmPaginationEllipsisComponent } from './hlm-pagination-ellipsis.component';
-import { HlmPaginationItemDirective } from './hlm-pagination-item.directive';
-import { HlmPaginationLinkDirective } from './hlm-pagination-link.directive';
-import { HlmPaginationNextComponent } from './hlm-pagination-next.component';
-import { HlmPaginationPreviousComponent } from './hlm-pagination-previous.component';
-import { HlmPaginationDirective } from './hlm-pagination.directive';
+} from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { BrnSelectImports } from "@spartan-ng/brain/select";
+import { HlmSelectImports } from "@spartan-ng/ui-select-helm";
+import { HlmPaginationContentDirective } from "./hlm-pagination-content.directive";
+import { HlmPaginationEllipsisComponent } from "./hlm-pagination-ellipsis.component";
+import { HlmPaginationItemDirective } from "./hlm-pagination-item.directive";
+import { HlmPaginationLinkDirective } from "./hlm-pagination-link.directive";
+import { HlmPaginationNextComponent } from "./hlm-pagination-next.component";
+import { HlmPaginationPreviousComponent } from "./hlm-pagination-previous.component";
+import { HlmPaginationDirective } from "./hlm-pagination.directive";
 
 @Component({
-	selector: 'hlm-numbered-pagination',
+	selector: "hlm-numbered-pagination",
 	template: `
 		<div class="flex items-center justify-between gap-2 px-4 py-2">
 			<div class="flex items-center gap-1 text-nowrap text-sm text-gray-600">
@@ -134,8 +134,12 @@ export class HlmNumberedPaginationComponent {
 			: [...pageSizes, this.itemsPerPage()].sort((a, b) => a - b); // otherwise, add current page size and sort the array
 	});
 
-	protected readonly isFirstPageActive = computed(() => this.currentPage() === 1);
-	protected readonly isLastPageActive = computed(() => this.currentPage() === this.lastPageNumber());
+	protected readonly isFirstPageActive = computed(
+		() => this.currentPage() === 1,
+	);
+	protected readonly isLastPageActive = computed(
+		() => this.currentPage() === this.lastPageNumber(),
+	);
 
 	protected readonly lastPageNumber = computed(() => {
 		if (this.totalItems() < 1) {
@@ -147,14 +151,23 @@ export class HlmNumberedPaginationComponent {
 	});
 
 	protected readonly pages = computed(() => {
-		const correctedCurrentPage = outOfBoundCorrection(this.totalItems(), this.itemsPerPage(), this.currentPage());
+		const correctedCurrentPage = outOfBoundCorrection(
+			this.totalItems(),
+			this.itemsPerPage(),
+			this.currentPage(),
+		);
 
 		if (correctedCurrentPage !== this.currentPage()) {
 			// update the current page
 			untracked(() => this.currentPage.set(correctedCurrentPage));
 		}
 
-		return createPageArray(correctedCurrentPage, this.itemsPerPage(), this.totalItems(), this.maxSize());
+		return createPageArray(
+			correctedCurrentPage,
+			this.itemsPerPage(),
+			this.totalItems(),
+			this.maxSize(),
+		);
 	});
 
 	protected goToPrevious(): void {
@@ -174,7 +187,7 @@ export class HlmNumberedPaginationComponent {
 	}
 }
 
-type Page = number | '...';
+type Page = number | "...";
 
 /**
  * Checks that the instance.currentPage property is within bounds for the current page range.
@@ -182,7 +195,11 @@ type Page = number | '...';
  *
  * Copied from 'ngx-pagination' package
  */
-function outOfBoundCorrection(totalItems: number, itemsPerPage: number, currentPage: number): number {
+function outOfBoundCorrection(
+	totalItems: number,
+	itemsPerPage: number,
+	currentPage: number,
+): number {
 	const totalPages = Math.ceil(totalItems / itemsPerPage);
 	if (totalPages < currentPage && 0 < totalPages) {
 		return totalPages;
@@ -207,7 +224,7 @@ function createPageArray(
 	paginationRange: number,
 ): Page[] {
 	// paginationRange could be a string if passed from attribute, so cast to number.
-	paginationRange = +paginationRange;
+	// paginationRange = +paginationRange;
 	const pages: Page[] = [];
 
 	// Return 1 as default page number
@@ -223,12 +240,18 @@ function createPageArray(
 	let i = 1;
 
 	while (i <= totalPages && i <= paginationRange) {
-		let label: number | '...';
-		const pageNumber = calculatePageNumber(i, currentPage, paginationRange, totalPages);
+		let label: number | "...";
+		const pageNumber = calculatePageNumber(
+			i,
+			currentPage,
+			paginationRange,
+			totalPages,
+		);
 		const openingEllipsesNeeded = i === 2 && (isMiddle || isEnd);
-		const closingEllipsesNeeded = i === paginationRange - 1 && (isMiddle || isStart);
+		const closingEllipsesNeeded =
+			i === paginationRange - 1 && (isMiddle || isStart);
 		if (ellipsesNeeded && (openingEllipsesNeeded || closingEllipsesNeeded)) {
-			label = '...';
+			label = "...";
 		} else {
 			label = pageNumber;
 		}
@@ -245,7 +268,12 @@ function createPageArray(
  *
  * Copied from 'ngx-pagination' package
  */
-function calculatePageNumber(i: number, currentPage: number, paginationRange: number, totalPages: number) {
+function calculatePageNumber(
+	i: number,
+	currentPage: number,
+	paginationRange: number,
+	totalPages: number,
+) {
 	const halfWay = Math.ceil(paginationRange / 2);
 	if (i === paginationRange) {
 		return totalPages;

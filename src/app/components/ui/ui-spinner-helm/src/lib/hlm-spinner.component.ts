@@ -1,34 +1,34 @@
-import { Component, computed, input } from '@angular/core';
-import { hlm } from '@spartan-ng/brain/core';
-import { type VariantProps, cva } from 'class-variance-authority';
-import type { ClassValue } from 'clsx';
+import { Component, computed, input } from "@angular/core";
+import { hlm } from "@spartan-ng/brain/core";
+import { type VariantProps, cva } from "class-variance-authority";
+import type { ClassValue } from "clsx";
 
-export const spinnerVariants = cva('inline-block', {
+export const spinnerVariants = cva("inline-block", {
 	variants: {
 		variant: {
-			default: 'animate-spin [&>svg]:text-foreground/30 [&>svg]:fill-accent',
+			default: "animate-spin [&>svg]:text-foreground/30 [&>svg]:fill-accent",
 		},
 		size: {
-			xs: 'h-4 w-4',
-			sm: 'h-6 w-6',
-			default: 'w-8 h-8 ',
-			lg: 'w-12 h-12',
-			xl: 'w-16 h-16',
+			xs: "h-4 w-4",
+			sm: "h-6 w-6",
+			default: "w-8 h-8 ",
+			lg: "w-12 h-12",
+			xl: "w-16 h-16",
 		},
 	},
 	defaultVariants: {
-		variant: 'default',
-		size: 'default',
+		variant: "default",
+		size: "default",
 	},
 });
 export type SpinnerVariants = VariantProps<typeof spinnerVariants>;
 
 @Component({
-	selector: 'hlm-spinner',
+	selector: "hlm-spinner",
 	standalone: true,
 	host: {
-		'[class]': '_computedClass()',
-		role: 'status',
+		"[class]": "_computedClass()",
+		role: "status",
 	},
 	template: `
 		<svg aria-hidden="true" class="animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,7 +45,9 @@ export type SpinnerVariants = VariantProps<typeof spinnerVariants>;
 	`,
 })
 export class HlmSpinnerComponent {
-	public readonly size = input<SpinnerVariants['size']>('default');
-	public readonly userClass = input<ClassValue>('', { alias: 'class' });
-	protected _computedClass = computed(() => hlm(spinnerVariants({ size: this.size() }), this.userClass()));
+	public readonly size = input<SpinnerVariants["size"]>("default");
+	public readonly userClass = input<ClassValue>("", { alias: "class" });
+	protected _computedClass = computed(() =>
+		hlm(spinnerVariants({ size: this.size() }), this.userClass()),
+	);
 }

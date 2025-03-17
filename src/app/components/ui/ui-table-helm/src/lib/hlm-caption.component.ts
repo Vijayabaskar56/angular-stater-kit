@@ -8,19 +8,19 @@ import {
 	inject,
 	input,
 	untracked,
-} from '@angular/core';
-import { hlm } from '@spartan-ng/brain/core';
-import type { ClassValue } from 'clsx';
-import { HlmTableComponent } from './hlm-table.component';
+} from "@angular/core";
+import { hlm } from "@spartan-ng/brain/core";
+import type { ClassValue } from "clsx";
+import { HlmTableComponent } from "./hlm-table.component";
 
 let captionIdSequence = 0;
 
 @Component({
-	selector: 'hlm-caption',
+	selector: "hlm-caption",
 	standalone: true,
 	host: {
-		'[class]': '_computedClass()',
-		'[id]': 'id()',
+		"[class]": "_computedClass()",
+		"[id]": "id()",
 	},
 	template: `
 		<ng-content />
@@ -31,14 +31,16 @@ let captionIdSequence = 0;
 export class HlmCaptionComponent {
 	private readonly _table = inject(HlmTableComponent, { optional: true });
 
-	protected readonly id = input<string | null | undefined>(`${captionIdSequence++}`);
+	protected readonly id = input<string | null | undefined>(
+		`${captionIdSequence++}`,
+	);
 
 	public readonly hidden = input(false, { transform: booleanAttribute });
-	public readonly userClass = input<ClassValue>('', { alias: 'class' });
+	public readonly userClass = input<ClassValue>("", { alias: "class" });
 	protected readonly _computedClass = computed(() =>
 		hlm(
-			'text-center block mt-4 text-sm text-muted-foreground',
-			this.hidden() ? 'sr-only' : 'order-last',
+			"text-center block mt-4 text-sm text-muted-foreground",
+			this.hidden() ? "sr-only" : "order-last",
 			this.userClass(),
 		),
 	);

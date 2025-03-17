@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
-import { BrnMenuGroupDirective } from '@spartan-ng/brain/menu';
+import { Component } from "@angular/core";
+import { BrnMenuGroupDirective } from "@spartan-ng/brain/menu";
 
 @Component({
-	selector: 'hlm-menu-group',
+	selector: "hlm-menu-group",
 	standalone: true,
 	host: {
-		class: 'block',
+		class: "block",
 	},
 	hostDirectives: [BrnMenuGroupDirective],
 	template: `

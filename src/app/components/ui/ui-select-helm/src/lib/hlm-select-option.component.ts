@@ -1,19 +1,27 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideCheck } from '@ng-icons/lucide';
-import { hlm } from '@spartan-ng/brain/core';
-import { BrnSelectOptionDirective } from '@spartan-ng/brain/select';
-import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
-import type { ClassValue } from 'clsx';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	computed,
+	inject,
+	input,
+} from "@angular/core";
+import { NgIcon, provideIcons } from "@ng-icons/core";
+import { lucideCheck } from "@ng-icons/lucide";
+import { hlm } from "@spartan-ng/brain/core";
+import { BrnSelectOptionDirective } from "@spartan-ng/brain/select";
+import { HlmIconDirective } from "@spartan-ng/ui-icon-helm";
+import type { ClassValue } from "clsx";
 
 @Component({
-	selector: 'hlm-option',
+	selector: "hlm-option",
 	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	hostDirectives: [{ directive: BrnSelectOptionDirective, inputs: ['disabled', 'value'] }],
+	hostDirectives: [
+		{ directive: BrnSelectOptionDirective, inputs: ["disabled", "value"] },
+	],
 	providers: [provideIcons({ lucideCheck })],
 	host: {
-		'[class]': '_computedClass()',
+		"[class]": "_computedClass()",
 	},
 	template: `
 		<ng-content />
@@ -30,11 +38,13 @@ import type { ClassValue } from 'clsx';
 	imports: [NgIcon, HlmIconDirective],
 })
 export class HlmSelectOptionComponent {
-	protected readonly _brnSelectOption = inject(BrnSelectOptionDirective, { host: true });
-	public readonly userClass = input<ClassValue>('', { alias: 'class' });
+	protected readonly _brnSelectOption = inject(BrnSelectOptionDirective, {
+		host: true,
+	});
+	public readonly userClass = input<ClassValue>("", { alias: "class" });
 	protected readonly _computedClass = computed(() =>
 		hlm(
-			'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 rtl:flex-reverse rtl:pr-8 rtl:pl-2 text-sm outline-none data-[active]:bg-accent data-[active]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+			"relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 rtl:flex-reverse rtl:pr-8 rtl:pl-2 text-sm outline-none data-[active]:bg-accent data-[active]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 			this.userClass(),
 		),
 	);

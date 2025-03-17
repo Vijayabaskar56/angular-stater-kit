@@ -1,7 +1,15 @@
-import { BooleanInput, NumberInput } from '@angular/cdk/coercion';
-import { Component, booleanAttribute, computed, input, model, numberAttribute, viewChild } from '@angular/core';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideChevronLeft, lucideChevronRight } from '@ng-icons/lucide';
+import type { BooleanInput, NumberInput } from "@angular/cdk/coercion";
+import {
+	Component,
+	booleanAttribute,
+	computed,
+	input,
+	model,
+	numberAttribute,
+	viewChild,
+} from "@angular/core";
+import { NgIcon, provideIcons } from "@ng-icons/core";
+import { lucideChevronLeft, lucideChevronRight } from "@ng-icons/lucide";
 import {
 	BrnCalendarCellButtonDirective,
 	BrnCalendarCellDirective,
@@ -12,18 +20,18 @@ import {
 	BrnCalendarPreviousButtonDirective,
 	BrnCalendarWeekDirective,
 	BrnCalendarWeekdayDirective,
-	Weekday,
+	type Weekday,
 	injectBrnCalendarI18n,
-} from '@spartan-ng/brain/calendar';
-import { hlm } from '@spartan-ng/brain/core';
-import { injectDateAdapter } from '@spartan-ng/brain/date-time';
-import { buttonVariants } from '@spartan-ng/ui-button-helm';
-import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
-import type { ClassValue } from 'clsx';
+} from "@spartan-ng/brain/calendar";
+import { hlm } from "@spartan-ng/brain/core";
+import { injectDateAdapter } from "@spartan-ng/brain/date-time";
+import { buttonVariants } from "@spartan-ng/ui-button-helm";
+import { HlmIconDirective } from "@spartan-ng/ui-icon-helm";
+import type { ClassValue } from "clsx";
 
 @Component({
 	standalone: true,
-	selector: 'hlm-calendar',
+	selector: "hlm-calendar",
 	imports: [
 		BrnCalendarDirective,
 		BrnCalendarHeaderDirective,
@@ -110,9 +118,11 @@ import type { ClassValue } from 'clsx';
 	`,
 })
 export class HlmCalendarComponent<T> {
-	public readonly calendarClass = input<ClassValue>('');
+	public readonly calendarClass = input<ClassValue>("");
 
-	protected readonly _computedCalenderClass = computed(() => hlm('rounded-md border p-3', this.calendarClass()));
+	protected readonly _computedCalenderClass = computed(() =>
+		hlm("rounded-md border p-3", this.calendarClass()),
+	);
 
 	/** Access the calendar i18n */
 	protected readonly i18n = injectBrnCalendarI18n();
@@ -157,11 +167,11 @@ export class HlmCalendarComponent<T> {
 	);
 
 	protected readonly btnClass = hlm(
-		buttonVariants({ variant: 'ghost' }),
-		'h-9 w-9 p-0 font-normal aria-selected:opacity-100',
-		'data-[outside]:text-muted-foreground data-[outside]:opacity-50 data-[outside]:aria-selected:bg-accent/50 data-[outside]:aria-selected:text-muted-foreground data-[outside]:aria-selected:opacity-30',
-		'data-[today]:bg-accent data-[today]:text-accent-foreground',
-		'data-[selected]:bg-primary data-[selected]:text-primary-foreground data-[selected]:hover:bg-primary data-[selected]:hover:text-primary-foreground data-[selected]:focus:bg-primary data-[selected]:focus:text-primary-foreground',
-		'data-[disabled]:text-muted-foreground data-[disabled]:opacity-50',
+		buttonVariants({ variant: "ghost" }),
+		"h-9 w-9 p-0 font-normal aria-selected:opacity-100",
+		"data-[outside]:text-muted-foreground data-[outside]:opacity-50 data-[outside]:aria-selected:bg-accent/50 data-[outside]:aria-selected:text-muted-foreground data-[outside]:aria-selected:opacity-30",
+		"data-[today]:bg-accent data-[today]:text-accent-foreground",
+		"data-[selected]:bg-primary data-[selected]:text-primary-foreground data-[selected]:hover:bg-primary data-[selected]:hover:text-primary-foreground data-[selected]:focus:bg-primary data-[selected]:focus:text-primary-foreground",
+		"data-[disabled]:text-muted-foreground data-[disabled]:opacity-50",
 	);
 }

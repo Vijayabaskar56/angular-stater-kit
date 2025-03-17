@@ -1,27 +1,31 @@
-import { Directive, computed, input } from '@angular/core';
-import { hlm } from '@spartan-ng/brain/core';
-import { type VariantProps, cva } from 'class-variance-authority';
-import type { ClassValue } from 'clsx';
+import { Directive, computed, input } from "@angular/core";
+import { hlm } from "@spartan-ng/brain/core";
+import { type VariantProps, cva } from "class-variance-authority";
+import type { ClassValue } from "clsx";
 
-export const paginationVariants = cva('mx-auto flex w-full justify-center', {
+export const paginationVariants = cva("mx-auto flex w-full justify-center", {
 	variants: {},
 	defaultVariants: {},
 });
 export type PaginationVariants = VariantProps<typeof paginationVariants>;
 
 @Directive({
-	selector: '[hlmPagination]',
+	selector: "[hlmPagination]",
 	standalone: true,
 	host: {
-		role: 'navigation',
-		'[class]': '_computedClass()',
-		'[attr.aria-label]': 'ariaLabel()',
+		role: "navigation",
+		"[class]": "_computedClass()",
+		"[attr.aria-label]": "ariaLabel()",
 	},
 })
 export class HlmPaginationDirective {
-	public readonly userClass = input<ClassValue>('', { alias: 'class' });
+	public readonly userClass = input<ClassValue>("", { alias: "class" });
 
-	public readonly ariaLabel = input<string>('pagination', { alias: 'aria-label' });
+	public readonly ariaLabel = input<string>("pagination", {
+		alias: "aria-label",
+	});
 
-	protected readonly _computedClass = computed(() => hlm(paginationVariants(), this.userClass()));
+	protected readonly _computedClass = computed(() =>
+		hlm(paginationVariants(), this.userClass()),
+	);
 }

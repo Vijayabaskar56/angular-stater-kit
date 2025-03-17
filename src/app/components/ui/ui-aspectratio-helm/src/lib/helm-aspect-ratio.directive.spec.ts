@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { type ComponentFixture, TestBed } from '@angular/core/testing';
-import { HlmAspectRatioDirective } from './helm-aspect-ratio.directive';
+import { Component } from "@angular/core";
+import { type ComponentFixture, TestBed } from "@angular/core/testing";
+import { HlmAspectRatioDirective } from "./helm-aspect-ratio.directive";
 
 @Component({
-	selector: 'hlm-mock',
+	selector: "hlm-mock",
 	standalone: true,
 	imports: [HlmAspectRatioDirective],
 	template: `
@@ -19,7 +19,7 @@ class MockComponent {
 	public ratio: number | undefined = 16 / 9;
 }
 
-describe('HelmAspectRatioDirective', () => {
+describe("HelmAspectRatioDirective", () => {
 	let component: MockComponent;
 	let fixture: ComponentFixture<MockComponent>;
 
@@ -28,47 +28,49 @@ describe('HelmAspectRatioDirective', () => {
 		component = fixture.componentInstance;
 	});
 
-	it('should compile', () => {
+	it("should compile", () => {
 		expect(component).toBeTruthy();
 	});
 
-	it('should show the image', () => {
+	it("should show the image", () => {
 		fixture.detectChanges();
-		const img = fixture.nativeElement.querySelector('img');
+		const img = fixture.nativeElement.querySelector("img");
 		expect(img).toBeTruthy();
 	});
 
-	it('should have the correct aspect ratio', () => {
+	it("should have the correct aspect ratio", () => {
 		fixture.detectChanges();
-		const div = fixture.nativeElement.querySelector('div');
+		const div = fixture.nativeElement.querySelector("div");
 		expect(div.style.paddingBottom).toEqual(`${100 / (component.ratio || 1)}%`);
 	});
 
-	it('should default to an aspect ratio of 1', () => {
+	it("should default to an aspect ratio of 1", () => {
 		component.ratio = undefined;
 		fixture.detectChanges();
-		const div = fixture.nativeElement.querySelector('div');
-		expect(div.style.paddingBottom).toEqual('100%');
+		const div = fixture.nativeElement.querySelector("div");
+		expect(div.style.paddingBottom).toEqual("100%");
 	});
 
-	it('should fallback to an aspect ratio of 1 if the ratio is 0', () => {
+	it("should fallback to an aspect ratio of 1 if the ratio is 0", () => {
 		component.ratio = 0;
 		fixture.detectChanges();
-		const div = fixture.nativeElement.querySelector('div');
-		expect(div.style.paddingBottom).toEqual('100%');
+		const div = fixture.nativeElement.querySelector("div");
+		expect(div.style.paddingBottom).toEqual("100%");
 	});
 
-	it('should fallback to an aspect ratio of 1 if the ratio is negative', () => {
+	it("should fallback to an aspect ratio of 1 if the ratio is negative", () => {
 		component.ratio = -1;
 		fixture.detectChanges();
-		const div = fixture.nativeElement.querySelector('div');
-		expect(div.style.paddingBottom).toEqual('100%');
+		const div = fixture.nativeElement.querySelector("div");
+		expect(div.style.paddingBottom).toEqual("100%");
 	});
 
-	it('should add the correct styles to the image', () => {
+	it("should add the correct styles to the image", () => {
 		fixture.detectChanges();
 
-		const img = fixture.nativeElement.querySelector('img') as HTMLImageElement;
-		expect(img.classList.toString()).toBe('absolute w-full h-full object-cover');
+		const img = fixture.nativeElement.querySelector("img") as HTMLImageElement;
+		expect(img.classList.toString()).toBe(
+			"absolute w-full h-full object-cover",
+		);
 	});
 });

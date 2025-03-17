@@ -1,15 +1,25 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { hlm } from '@spartan-ng/brain/core';
-import { BRN_SLIDER, BRN_SLIDER_TRACK, BrnSliderTrackDirective } from '@spartan-ng/brain/slider';
-import type { ClassValue } from 'clsx';
-import { HlmSliderTickMarkDirective } from './hlm-slider-tick-mark.directive';
-import { HlmSliderTickMarksDirective } from './hlm-slider-tick-marks.directive';
-import { HlmSliderTrackActiveFillDirective } from './hlm-slider-track-active-fill.directive';
-import { HlmSliderTrackActiveDirective } from './hlm-slider-track-active.directive';
-import { HlmSliderTrackInactiveDirective } from './hlm-slider-track-inactive.directive';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	computed,
+	inject,
+	input,
+} from "@angular/core";
+import { hlm } from "@spartan-ng/brain/core";
+import {
+	BRN_SLIDER,
+	BRN_SLIDER_TRACK,
+	BrnSliderTrackDirective,
+} from "@spartan-ng/brain/slider";
+import type { ClassValue } from "clsx";
+import { HlmSliderTickMarkDirective } from "./hlm-slider-tick-mark.directive";
+import { HlmSliderTickMarksDirective } from "./hlm-slider-tick-marks.directive";
+import { HlmSliderTrackActiveFillDirective } from "./hlm-slider-track-active-fill.directive";
+import { HlmSliderTrackActiveDirective } from "./hlm-slider-track-active.directive";
+import { HlmSliderTrackInactiveDirective } from "./hlm-slider-track-inactive.directive";
 
 @Component({
-	selector: 'hlm-slider-track, brn-slider-track [hlm]',
+	selector: "hlm-slider-track, brn-slider-track [hlm]",
 	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
@@ -33,7 +43,7 @@ import { HlmSliderTrackInactiveDirective } from './hlm-slider-track-inactive.dir
 		</div>
 	`,
 	host: {
-		'[class]': '_computedClass()',
+		"[class]": "_computedClass()",
 	},
 	hostDirectives: [BrnSliderTrackDirective],
 	imports: [
@@ -45,9 +55,12 @@ import { HlmSliderTrackInactiveDirective } from './hlm-slider-track-inactive.dir
 	],
 })
 export class HlmSliderTrackComponent {
-	public readonly userClass = input<ClassValue>('', { alias: 'class' });
+	public readonly userClass = input<ClassValue>("", { alias: "class" });
 	protected _computedClass = computed(() =>
-		hlm('flex w-full h-2 px-3 self-center relative transition-all', this.userClass()),
+		hlm(
+			"flex w-full h-2 px-3 self-center relative transition-all",
+			this.userClass(),
+		),
 	);
 
 	protected readonly _brnSlider = inject(BRN_SLIDER);

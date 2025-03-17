@@ -1,10 +1,19 @@
-import { booleanAttribute, Component, computed, input, output } from '@angular/core';
-import { hlm } from '@spartan-ng/brain/core';
-import { BrnRadioChange, BrnRadioComponent } from '@spartan-ng/brain/radio-group';
-import { ClassValue } from 'clsx';
+import {
+	Component,
+	booleanAttribute,
+	computed,
+	input,
+	output,
+} from "@angular/core";
+import { hlm } from "@spartan-ng/brain/core";
+import {
+	type BrnRadioChange,
+	BrnRadioComponent,
+} from "@spartan-ng/brain/radio-group";
+import type { ClassValue } from "clsx";
 
 @Component({
-	selector: 'hlm-radio',
+	selector: "hlm-radio",
 	standalone: true,
 	imports: [BrnRadioComponent],
 	template: `
@@ -25,10 +34,10 @@ import { ClassValue } from 'clsx';
 	`,
 })
 export class HlmRadioComponent<T = unknown> {
-	public readonly userClass = input<ClassValue>('', { alias: 'class' });
+	public readonly userClass = input<ClassValue>("", { alias: "class" });
 	protected _computedClass = computed(() =>
 		hlm(
-			'group [&.brn-radio-disabled]:text-muted-foreground flex items-center space-x-2 rtl:space-x-reverse',
+			"group [&.brn-radio-disabled]:text-muted-foreground flex items-center space-x-2 rtl:space-x-reverse",
 			this.userClass(),
 		),
 	);
@@ -37,13 +46,19 @@ export class HlmRadioComponent<T = unknown> {
 	public readonly id = input<string | undefined>(undefined);
 
 	/** Used to set the aria-label attribute on the underlying brn element. */
-	public readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
+	public readonly ariaLabel = input<string | undefined>(undefined, {
+		alias: "aria-label",
+	});
 
 	/** Used to set the aria-labelledby attribute on the underlying brn element. */
-	public readonly ariaLabelledby = input<string | undefined>(undefined, { alias: 'aria-labelledby' });
+	public readonly ariaLabelledby = input<string | undefined>(undefined, {
+		alias: "aria-labelledby",
+	});
 
 	/** Used to set the aria-describedby attribute on the underlying brn element. */
-	public readonly ariaDescribedby = input<string | undefined>(undefined, { alias: 'aria-describedby' });
+	public readonly ariaDescribedby = input<string | undefined>(undefined, {
+		alias: "aria-describedby",
+	});
 
 	/**
 	 * The value this radio button represents.

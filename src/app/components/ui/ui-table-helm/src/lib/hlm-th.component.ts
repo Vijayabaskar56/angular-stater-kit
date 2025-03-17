@@ -1,4 +1,4 @@
-import { NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from "@angular/common";
 import {
 	ChangeDetectionStrategy,
 	Component,
@@ -7,17 +7,17 @@ import {
 	computed,
 	inject,
 	input,
-} from '@angular/core';
-import { hlm } from '@spartan-ng/brain/core';
-import { BrnColumnDefComponent } from '@spartan-ng/brain/table';
-import type { ClassValue } from 'clsx';
+} from "@angular/core";
+import { hlm } from "@spartan-ng/brain/core";
+import { BrnColumnDefComponent } from "@spartan-ng/brain/table";
+import type { ClassValue } from "clsx";
 
 @Component({
-	selector: 'hlm-th',
+	selector: "hlm-th",
 	standalone: true,
 	imports: [NgTemplateOutlet],
 	host: {
-		'[class]': '_computedClass()',
+		"[class]": "_computedClass()",
 	},
 	template: `
 		<ng-template #content>
@@ -35,13 +35,15 @@ import type { ClassValue } from 'clsx';
 	encapsulation: ViewEncapsulation.None,
 })
 export class HlmThComponent {
-	private readonly _columnDef? = inject(BrnColumnDefComponent, { optional: true });
+	private readonly _columnDef? = inject(BrnColumnDefComponent, {
+		optional: true,
+	});
 	public readonly truncate = input(false, { transform: booleanAttribute });
 
-	public readonly userClass = input<ClassValue>('', { alias: 'class' });
+	public readonly userClass = input<ClassValue>("", { alias: "class" });
 	protected readonly _computedClass = computed(() =>
 		hlm(
-			'flex flex-none h-12 px-4 text-sm items-center font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0',
+			"flex flex-none h-12 px-4 text-sm items-center font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
 			this._columnDef?.class(),
 			this.userClass(),
 		),

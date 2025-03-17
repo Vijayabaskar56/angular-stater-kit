@@ -1,16 +1,16 @@
-import { BooleanInput } from '@angular/cdk/coercion';
-import { booleanAttribute, Component, computed, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideChevronLeft } from '@ng-icons/lucide';
-import { hlm } from '@spartan-ng/brain/core';
-import { ButtonVariants } from '@spartan-ng/ui-button-helm';
-import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
-import { ClassValue } from 'clsx';
-import { HlmPaginationLinkDirective } from './hlm-pagination-link.directive';
+import type { BooleanInput } from "@angular/cdk/coercion";
+import { Component, booleanAttribute, computed, input } from "@angular/core";
+import type { RouterLink } from "@angular/router";
+import { NgIcon, provideIcons } from "@ng-icons/core";
+import { lucideChevronLeft } from "@ng-icons/lucide";
+import { hlm } from "@spartan-ng/brain/core";
+import type { ButtonVariants } from "@spartan-ng/ui-button-helm";
+import { HlmIconDirective } from "@spartan-ng/ui-icon-helm";
+import type { ClassValue } from "clsx";
+import { HlmPaginationLinkDirective } from "./hlm-pagination-link.directive";
 
 @Component({
-	selector: 'hlm-pagination-previous',
+	selector: "hlm-pagination-previous",
 	standalone: true,
 	imports: [HlmPaginationLinkDirective, NgIcon, HlmIconDirective],
 	providers: [provideIcons({ lucideChevronLeft })],
@@ -30,18 +30,25 @@ import { HlmPaginationLinkDirective } from './hlm-pagination-link.directive';
 	`,
 })
 export class HlmPaginationPreviousComponent {
-	public readonly userClass = input<ClassValue>('', { alias: 'class' });
-	public readonly link = input<RouterLink['routerLink']>();
-	public readonly queryParams = input<RouterLink['queryParams']>();
-	public readonly queryParamsHandling = input<RouterLink['queryParamsHandling']>();
+	public readonly userClass = input<ClassValue>("", { alias: "class" });
+	public readonly link = input<RouterLink["routerLink"]>();
+	public readonly queryParams = input<RouterLink["queryParams"]>();
+	public readonly queryParamsHandling =
+		input<RouterLink["queryParamsHandling"]>();
 
-	public readonly ariaLabel = input<string>('Go to previous page', { alias: 'aria-label' });
-	public readonly text = input<string>('Previous');
+	public readonly ariaLabel = input<string>("Go to previous page", {
+		alias: "aria-label",
+	});
+	public readonly text = input<string>("Previous");
 	public readonly iconOnly = input<boolean, BooleanInput>(false, {
 		transform: booleanAttribute,
 	});
 
-	protected readonly size = computed<ButtonVariants['size']>(() => (this.iconOnly() ? 'icon' : 'default'));
+	protected readonly size = computed<ButtonVariants["size"]>(() =>
+		this.iconOnly() ? "icon" : "default",
+	);
 
-	protected readonly _computedClass = computed(() => hlm('gap-1', !this.iconOnly() ? 'pl-2.5' : '', this.userClass()));
+	protected readonly _computedClass = computed(() =>
+		hlm("gap-1", !this.iconOnly() ? "pl-2.5" : "", this.userClass()),
+	);
 }

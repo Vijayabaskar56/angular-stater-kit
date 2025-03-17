@@ -1,9 +1,9 @@
-import { Directive } from '@angular/core';
-import { provideHlmIconConfig } from '@spartan-ng/ui-icon-helm';
+import { Directive } from "@angular/core";
+import { provideHlmIconConfig } from "@spartan-ng/ui-icon-helm";
 
 @Directive({
-	selector: '[hlmAlertIcon]',
+	selector: "[hlmAlertIcon]",
 	standalone: true,
-	providers: [provideHlmIconConfig({ size: 'sm' })],
+	providers: [provideHlmIconConfig({ size: "sm" })],
 })
 export class HlmAlertIconDirective {}
