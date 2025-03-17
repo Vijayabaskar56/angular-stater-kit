@@ -1,26 +1,23 @@
 import { CommonModule } from "@angular/common";
 import { Component, type OnInit, inject } from "@angular/core";
 import { type Theme, ThemeService } from "../../services/theme.service";
+import { Laptop, LucideAngularModule, Moon, Sun } from "lucide-angular";
 
 @Component({
 	selector: "app-theme-switcher",
 	standalone: true,
-	imports: [CommonModule],
+	imports: [CommonModule , LucideAngularModule],
 	template: `
     <div class="dropdown dropdown-end">
       <label tabindex="0" class="btn btn-ghost btn-circle">
         <!-- Sun icon -->
-        <svg *ngIf="currentTheme === 'light'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-        <!-- Moon icon -->
-        <svg *ngIf="currentTheme === 'dark'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        </svg>
-        <!-- System icon -->
-        <svg *ngIf="currentTheme === 'system'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-        </svg>
+         @if  (currentTheme === 'light') {
+          <i-lucide [img]="Sun" class="my-icon"></i-lucide>
+         } @else if(currentTheme === 'dark') {
+          <i-lucide [img]="Moon" class="my-icon"></i-lucide>
+        } @else {
+          <i-lucide [img]="Moon" class="my-icon"></i-lucide>
+        }
       </label>
       <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-200 rounded-box w-52">
         <li>
@@ -28,9 +25,7 @@ import { type Theme, ThemeService } from "../../services/theme.service";
             [class.active]="currentTheme === 'light'"
             (click)="changeTheme('light')"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
+            <i-lucide [img]="Sun" class="my-icon"></i-lucide>
             Light
           </button>
         </li>
@@ -39,9 +34,7 @@ import { type Theme, ThemeService } from "../../services/theme.service";
             [class.active]="currentTheme === 'dark'"
             (click)="changeTheme('dark')"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            </svg>
+            <i-lucide [img]="Moon" class="my-icon"></i-lucide>
             Dark
           </button>
         </li>
@@ -50,9 +43,7 @@ import { type Theme, ThemeService } from "../../services/theme.service";
             [class.active]="currentTheme === 'system'"
             (click)="changeTheme('system')"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
+            <i-lucide [img]="System" class="my-icon"></i-lucide>
             System
           </button>
         </li>
@@ -68,6 +59,9 @@ import { type Theme, ThemeService } from "../../services/theme.service";
 export class ThemeSwitcherComponent implements OnInit {
 	currentTheme: Theme = "system";
 	themeService = inject(ThemeService);
+  readonly Sun = Sun; 
+  readonly Moon = Moon;
+  readonly System = Laptop;
 
 	ngOnInit() {
 		this.themeService.theme$.subscribe((theme) => {
